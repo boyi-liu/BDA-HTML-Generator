@@ -198,6 +198,7 @@ class Manager:
     def student_en(self):
         self.phd_list = [s for s in self.people_list_en if s.status == 1 and s.degree_en == 'Ph.D.']
         self.master_list = [s for s in self.people_list_en if s.status == 1 and s.degree_en == 'Master.']
+        self.intern_list = [s for s in self.people_list_en if s.status == 1 and s.degree_en == 'Undergraduate.']
         
         item = ''
         item += '<div class="cil-team-student">\n'
@@ -213,6 +214,12 @@ class Manager:
         for m in self.master_list:
             item += m.generate()
         item += '</div>\n'
+
+        item += '<h1>Undergraduate Interns</h1>'
+        item += '<div class="cil-member-list">\n'
+        for m in self.intern_list:
+            item += m.generate()
+        item += '</div>\n'
         
         item += '</div>\n'
         
@@ -224,6 +231,7 @@ class Manager:
     def student_zh(self):
         self.phd_list = [s for s in self.people_list_zh if s.status == 1 and s.degree_zh == '博士生']
         self.master_list = [s for s in self.people_list_zh if s.status == 1 and s.degree_zh == '硕士生']
+        self.intern_list = [s for s in self.people_list_zh if s.status == 1 and s.degree_zh == '本科生']
         
         item = ''
         item += '<div class="cil-team-student">\n'
@@ -239,6 +247,14 @@ class Manager:
         for m in self.master_list:
             item += m.generate()
         item += '</div>\n'
+
+        item += '<h1>本科生</h1>'
+        item += '<div class="cil-member-list">\n'
+        for m in self.intern_list:
+            item += m.generate()
+        item += '</div>\n'
+
+
         
         item += '</div>\n'
         
