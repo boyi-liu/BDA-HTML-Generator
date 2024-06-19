@@ -8,9 +8,4 @@ Support generating
 + Student
 + Alumni
 + News
-
-
-
-To be implemented
-
 + Publications
