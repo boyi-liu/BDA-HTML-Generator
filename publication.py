@@ -50,6 +50,10 @@ class Publication:
             item += (
                 f'<a class="btn btn-download-github btn-download" href="{self.code}" target="_blank"><span class="icon-github icon"></span>Code&Data</a>\n')
 
+        if MODE == 'zh' and hasattr(self, 'award_zh'):
+            item += f'<b><font color="#ff0000">[{self.award_zh}]</font></b>\n'
+        elif MODE == 'en' and hasattr(self, 'award_en'):
+            item += f'<b><font color="#ff0000">[{self.award_en}]</font></b>\n'
         item += '</li>\n'
         return item
 
