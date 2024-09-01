@@ -47,6 +47,17 @@ class Student:
             item += '</font>\n'
             item += '<br>\n'
             item += '</div>\n'
+        if hasattr(self, 'award_zh') or hasattr(self, 'award_en'):
+            item += '<div class="cil-member-honor">\n'
+            item += '<img src=./static/images/icon/award.png width="18" style="margin-right: 5px;">'
+            item += '<font face="Times New Roman" size="2">'
+            if hasattr(self, 'award_zh'):
+                item += self.award_zh
+            else:
+                item += self.award_en
+            item += '</font>\n'
+            item += '<br>\n'
+            item += '</div>\n'
         item += '</div>\n'
         return item
     
