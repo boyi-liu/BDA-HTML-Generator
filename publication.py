@@ -72,8 +72,9 @@ class Manager:
                         setattr(p, key, value)
                     self.pub_dict[year].append(p)
     def publications(self):
-        item = '<div class="cil-pub-year">\n'
+        item = ''
         for year, year_publications in self.pub_dict.items():
+            item += '<div class="cil-pub-year">\n'
             item += f'<h2 id="{year}">{year}</h2>\n'
             item += '<ol>\n'
             for pub in year_publications:
