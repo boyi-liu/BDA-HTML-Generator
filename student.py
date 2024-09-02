@@ -207,13 +207,20 @@ class Manager:
         replace(start_comment, end_comment, item, file_src)
     
     def student_en(self):
+        self.postdoc_list = [s for s in self.people_list_en if s.status == 1 and s.degree_en == 'Postdoc.']
         self.phd_list = [s for s in self.people_list_en if s.status == 1 and s.degree_en == 'Ph.D.']
         self.master_list = [s for s in self.people_list_en if s.status == 1 and s.degree_en == 'Master.']
         self.intern_list = [s for s in self.people_list_en if s.status == 1 and s.degree_en == 'Undergraduate.']
         
         item = ''
         item += '<div class="cil-team-student">\n'
-        
+
+        item += '<h1>Postdoc Students</h1>'
+        item += '<div class="cil-member-list">\n'
+        for postdoc in self.postdoc_list:
+            item += postdoc.generate()
+        item += '</div>\n'
+
         item += '<h1>Ph.D Students</h1>'
         item += '<div class="cil-member-list">\n'
         for phd in self.phd_list:
@@ -240,13 +247,20 @@ class Manager:
         replace(start_comment, end_comment, item, file_src)
         
     def student_zh(self):
+        self.postdoc_list = [s for s in self.people_list_zh if s.status == 1 and s.degree_zh == '博士后']
         self.phd_list = [s for s in self.people_list_zh if s.status == 1 and s.degree_zh == '博士生']
         self.master_list = [s for s in self.people_list_zh if s.status == 1 and s.degree_zh == '硕士生']
         self.intern_list = [s for s in self.people_list_zh if s.status == 1 and s.degree_zh == '本科生']
         
         item = ''
         item += '<div class="cil-team-student">\n'
-        
+
+        item += '<h1>博士后</h1>'
+        item += '<div class="cil-member-list">\n'
+        for postdoc in self.postdoc_list:
+            item += postdoc.generate()
+        item += '</div>\n'
+
         item += '<h1>博士生</h1>'
         item += '<div class="cil-member-list">\n'
         for phd in self.phd_list:
