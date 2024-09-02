@@ -2,6 +2,7 @@ import json
 import re
 
 HOMEPAGE_PATH = '/Users/boy/Documents/代码/CILab'
+HOMEPAGE_PROF_PATH = '/Users/boy/Documents/代码/老师主页/academicpages.github.io-master/_pages'
 PUBS_PATH = './data/paper.json'
 MODE = 'en'
 
@@ -57,6 +58,31 @@ class Publication:
         item += '</li>\n'
         return item
 
+    def generate_prof(self):
+        if not hasattr(self, 'ccfa'):
+            return ''
+        item = ''
+        item += '+ '
+        item += f'{self.author}.'
+        item += f'<a href="https://hufudb.com/{self.pdf}" target="_blank"> "{self.title}"</a>, '
+
+        if hasattr(self, 'appear'):
+            item += 'to appear '
+        if self.proceeding.startswith('Proceeding'):
+            item += 'in '
+        item += f'<i>{self.proceeding}</i> (<b>{self.conf}</b>), '
+        item += f'{self.info}.'
+
+        if hasattr(self, 'code'):
+            item += f'[[Code and Data]({self.code})]'
+
+        if MODE == 'zh' and hasattr(self, 'award_zh'):
+            item += f'<b><font color="#ff0000">[{self.award_zh}]</font></b>'
+        elif MODE == 'en' and hasattr(self, 'award_en'):
+            item += f'<b><font color="#ff0000">[{self.award_en}]</font></b>'
+        item += '\n'
+        return item
+
 class Manager:
     def __init__(self):
         self.pub_dict = dict()
@@ -91,8 +117,24 @@ class Manager:
         end_comment = '<!-- publication end -->'
         replace(start_comment, end_comment, item, file_src)
 
+    def publications_prof(self):
+        item = ''
+        for year, year_publications in self.pub_dict.items():
+            for pub in year_publications:
+                item += pub.generate_prof()
+
+        if MODE == 'en':
+            file_src = f'{HOMEPAGE_PROF_PATH}/publications.md'
+        else:
+            file_src = f'{HOMEPAGE_PROF_PATH}/publications-cn.md'
+        start_comment = '<!-- publication start -->'
+        end_comment = '<!-- publication end -->'
+        replace(start_comment, end_comment, item, file_src)
+
 
 m = Manager()
 m.publications()
+m.publications_prof()
 MODE='zh'
 m.publications()
+m.publications_prof()
