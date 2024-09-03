@@ -51,6 +51,10 @@ class Publication:
             item += (
                 f'<a class="btn btn-download-github btn-download" href="{self.code}" target="_blank"><span class="icon-github icon"></span>Code&Data</a>\n')
 
+        if hasattr(self, 'poster'):
+            item += (
+                f'<a class="btn btn-download-poster btn-download" href="{self.code}" target="_blank"><span class="icon-poster icon"></span>Poster</a>\n')
+
         if MODE == 'zh' and hasattr(self, 'award_zh'):
             item += f'<b><font color="#ff0000">[{self.award_zh}]</font></b>\n'
         elif MODE == 'en' and hasattr(self, 'award_en'):
@@ -75,6 +79,8 @@ class Publication:
 
         if hasattr(self, 'code'):
             item += f'[[Code and Data]({self.code})]'
+        if hasattr(self, 'poster'):
+            item += f'[[Poster]({self.poster})]'
 
         if MODE == 'zh' and hasattr(self, 'award_zh'):
             item += f'<b><font color="#ff0000">[{self.award_zh}]</font></b>'
