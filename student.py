@@ -1,5 +1,5 @@
 from enum import Enum
-import json
+import yaml
 import re
 
 class Status(Enum):
@@ -9,10 +9,9 @@ class Status(Enum):
     ALUMNI = 3
 
 degree_list_zh = ['博士后', '博士生', '硕士生', '本科生']
-degree_list_en = ['Postdoc', 'Ph.D', 'Master', 'Undergraduate']
+degree_list_en = ['Postdoc', 'Ph.D.', 'Master', 'Undergraduate']
 
-HOMEPAGE_PATH = '/Users/boyiliu/Documents/代码/CILab'
-PEOPLE_PATH = './data/people.json'
+HOMEPAGE_PATH = '/Users/boy/Documents/代码/CILab'
 
 class Student:
     def generate(self):
@@ -51,7 +50,7 @@ class Student:
             item += '<div class="cil-member-honor">\n'
             item += '<img src=./static/images/icon/award.png width="18" style="margin-right: 5px;">'
             item += '<font face="Times New Roman" size="2">'
-            if hasattr(self, 'award_zh'):
+            if MODE == 'zh':
                 item += self.award_zh
             else:
                 item += self.award_en
@@ -80,22 +79,27 @@ class Student:
             item += f'<div class="cil-member-desc">Graduation Destination: <a href="{self.grad_des_link}" target="_blank" style="text-decoration: none">{self.grad_des_en}</a> </div>\n' if hasattr(self, 'grad_des_en') else ''
         item += '</div>\n'
         return item
-    
+
+def load_people(file_path='./data/people.yml'):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f)
+        return data['people']
+
+
 class Manager:
     def __init__(self):
         self.people_list = []
-        with open(PEOPLE_PATH, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            people = data.get('people')
+        people = load_people()
         
-            for person in people:
-                s = Student()
-                for key, value in person.items():
-                    setattr(s, key, value)
-                self.people_list.append(s)
+        for person in people:
+            s = Student()
+            for key, value in person.items():
+                setattr(s, key, value)
+            self.people_list.append(s)
         self.alumni_phd_list = [s for s in self.people_list if s.status > 1 and s.degree <= 1]
-        self.alumni_master_list = [s for s in self.people_list if s.status > 1 and s.degree_zh == 2]
+        self.alumni_master_list = [s for s in self.people_list if s.status > 1 and s.degree == 2]
         self.postdoc_list = [s for s in self.people_list if s.status == 1 and s.degree == 0]
+
         self.phd_list = [s for s in self.people_list if s.status == 1 and s.degree == 1]
         self.master_list = [s for s in self.people_list if s.status == 1 and s.degree == 2]
         self.intern_list = [s for s in self.people_list if s.status == 1 and s.degree == 3]
@@ -107,7 +111,7 @@ class Manager:
         if MODE == 'zh':
             item += '<h1>博士生/博士后</h1>\n'
         else:
-            item += '<h1>Ph.D/Postdoc</h1>\n'
+            item += '<h1>Ph.D./Postdoc</h1>\n'
         item += '<div class="cil-member-list">\n'
 
         for phd in self.alumni_phd_list:
@@ -168,7 +172,7 @@ class Manager:
         item += '</div>\n'
 
         if MODE == 'en':
-            item += '<h1>Ph.D Students</h1>'
+            item += '<h1>Ph.D. Students</h1>'
         else:
             item += '<h1>博士生</h1>'
 
@@ -193,9 +197,9 @@ class Manager:
         item += '<div class="cil-member-list">\n'
         for m in self.intern_list:
             item += m.generate()
-        item += '</div>\n'
-        
-        item += '</div>\n'
+        # item += '</div>\n'
+        #
+        # item += '</div>\n'
 
         if MODE == 'en':
             file_src = f'{HOMEPAGE_PATH}/index.html'
