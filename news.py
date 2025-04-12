@@ -1,5 +1,6 @@
 import json
 import re
+import yaml
 
 HOMEPAGE_PATH = '/Users/boy/Documents/代码/CILab'
 NEWS_PATH = './data/news.json'
@@ -37,19 +38,21 @@ class News:
         item += '</li>\n'
         return item
         
-        
+def load_news(file_path='./data/news.yml'):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = yaml.safe_load(f)
+        return data['news']
+
 class Manager:
     def __init__(self):
         self.news_list = []
-        with open(NEWS_PATH, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            news = data.get('news')
+        news = load_news()
         
-            for n in news:
-                new = News() 
-                for key, value in n.items():
-                    setattr(new, key, value)
-                self.news_list.append(new)
+        for n in news:
+            new = News()
+            for key, value in n.items():
+                setattr(new, key, value)
+            self.news_list.append(new)
                 
     def generate_news(self):
         item = ''
